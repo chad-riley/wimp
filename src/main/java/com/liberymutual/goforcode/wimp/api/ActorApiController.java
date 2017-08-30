@@ -24,7 +24,6 @@ public class ActorApiController {
 	
 	public ActorApiController(ActorRepository actorRepo) {
 		this.actorRepo = actorRepo;
-
 	}
 
 	@GetMapping("")

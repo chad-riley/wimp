@@ -58,9 +58,10 @@ public class Actor {
 	@Column(length=75, nullable=false)
 	private String firstName;
 	
-	@Column(length=75, nullable=false)
+	@Column(length=75, nullable=true)
 	private String lastName;
 	
+	@Column(nullable=true)
 	private Long activeSinceLastYear;
 	
 	private Date birthDate;
