@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.liberymutual.goforcode.wimp.models.Actor;
+import com.liberymutual.goforcode.wimp.models.ActorWithMovies;
 import com.liberymutual.goforcode.wimp.repositories.ActorRepository;
 
 @RestController
@@ -22,9 +23,15 @@ public class ActorApiController {
 	
 	private ActorRepository actorRepo;
 	
+
 	public ActorApiController(ActorRepository actorRepo) {
 		this.actorRepo = actorRepo;
-	}
+		Actor actor = new Actor();
+		actor.setFirstName("Rutger");
+		actor.setLastName("Hauer");
+		actorRepo.save(actor);
+		}
+	
 
 	@GetMapping("")
 	public List<Actor> getAll(){
@@ -32,9 +39,21 @@ public class ActorApiController {
 	}
 	
 	@GetMapping("{id}")
-	public Actor getOne(@PathVariable long id) {
-		return actorRepo.findOne(id);   //getOne doesn't work.  use findOne
-	}
+    public Actor getOne(@PathVariable long id) throws StuffNotFoundException{
+        Actor actor = actorRepo.findOne(id);
+        if (actor == null) {
+            throw new StuffNotFoundException();
+        }
+//        ActorWithMovies newActor = new ActorWithMovies();
+//        newActor.setId(actor.getId());
+//        newActor.setActiveSinceLastYear(actor.getActiveSinceLastYear());
+//        newActor.setBirthDate(actor.getBirthDate());
+//        newActor.setFirstName(actor.getFirstName());
+//        newActor.setLastName(actor.getLastName());
+//        newActor.setMovies(actor.getMovies());
+//        return newActor;
+        return actor;
+    }
 	
 	@DeleteMapping("{id}")
 	public Actor delete(@PathVariable long id) {
