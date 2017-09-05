@@ -38,7 +38,7 @@ public class Actor {
 	}
 
 	@Column(nullable=true)
-	private Long activeSinceLastYear;
+	private Long activeSinceYear;
 	
 //	@JsonIgnore
 	@ManyToMany(mappedBy="actors")
@@ -73,12 +73,12 @@ public class Actor {
 		this.lastName = lastName;
 	}
 
-	public Long getActiveSinceLastYear() {
-		return activeSinceLastYear;
+	public Long getActiveSinceYear() {
+		return activeSinceYear;
 	}
 
-	public void setActiveSinceLastYear(Long activeSinceLastYear) {
-		this.activeSinceLastYear = activeSinceLastYear;
+	public void setActiveSinceYear(Long activeSinceYear) {
+		this.activeSinceYear = activeSinceYear;
 	}
 
 	public Date getBirthDate() {

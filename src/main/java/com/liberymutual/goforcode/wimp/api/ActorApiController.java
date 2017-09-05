@@ -17,6 +17,8 @@ import com.liberymutual.goforcode.wimp.models.Actor;
 import com.liberymutual.goforcode.wimp.models.ActorWithMovies;
 import com.liberymutual.goforcode.wimp.repositories.ActorRepository;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/actors")
 public class ActorApiController {
@@ -32,12 +34,13 @@ public class ActorApiController {
 		actorRepo.save(actor);
 		}
 	
-
+	@ApiOperation(value="Returns a list of actors.")
 	@GetMapping("")
 	public List<Actor> getAll(){
 		return actorRepo.findAll();
 	}
 	
+	@ApiOperation(value="Selects an actor by ID.")
 	@GetMapping("{id}")
     public Actor getOne(@PathVariable long id) throws StuffNotFoundException{
         Actor actor = actorRepo.findOne(id);
@@ -46,7 +49,7 @@ public class ActorApiController {
         }
 //        ActorWithMovies newActor = new ActorWithMovies();
 //        newActor.setId(actor.getId());
-//        newActor.setActiveSinceLastYear(actor.getActiveSinceLastYear());
+//        newActor.setActiveSinceYear(actor.getActiveSinceYear());
 //        newActor.setBirthDate(actor.getBirthDate());
 //        newActor.setFirstName(actor.getFirstName());
 //        newActor.setLastName(actor.getLastName());
@@ -55,6 +58,7 @@ public class ActorApiController {
         return actor;
     }
 	
+	@ApiOperation(value="Delete an actor by ID.")
 	@DeleteMapping("{id}")
 	public Actor delete(@PathVariable long id) {
 		try{
@@ -66,11 +70,14 @@ public class ActorApiController {
 		}
 	}
 	
+	@ApiOperation(value="Creates an actor.")
 	@PostMapping("")
 	public Actor create(@RequestBody Actor actor) {
-		return actorRepo.save(actor);
+		Actor savedActor = actorRepo.save(actor);
+		return savedActor;
 	}
-
+	
+	@ApiOperation(value="Updates an actor.")
 	@PutMapping("{id}")
 	public Actor update(@RequestBody Actor actor, @PathVariable long id) {
 		actor.setId(id);

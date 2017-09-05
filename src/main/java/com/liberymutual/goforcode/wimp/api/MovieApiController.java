@@ -17,8 +17,13 @@ import com.liberymutual.goforcode.wimp.models.Movie;
 import com.liberymutual.goforcode.wimp.repositories.ActorRepository;
 import com.liberymutual.goforcode.wimp.repositories.MovieRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
+
 @RequestMapping("/api/movies")
+@Api(description="Use this to get and create movies and add actors to movies.")
 public class MovieApiController {
 
 	private MovieRepository movieRepo;
@@ -31,11 +36,12 @@ public class MovieApiController {
 		this.movieRepo = movieRepo;
 		Movie movie = new Movie();
 		movie.setTitle("Blade Runner");
-		movie.setDistributor("Warner Brothers");
+		movie.setDistributor("Warner Bros");
 		movie.setActors(actorRepo.findAll());
 		movieRepo.save(movie);
 	}
-
+	
+	@ApiOperation(value="Find actors by movie ID.", notes="You only need to add into the browser /ID.")
 	@PostMapping("{movieId}/actors")
 	public Movie accociateAnActor(@PathVariable long movieId, @RequestBody Actor actor) {
 		Movie movie = movieRepo.findOne(movieId);
@@ -48,16 +54,23 @@ public class MovieApiController {
 		
 	}
 	
+	@ApiOperation(value="Returns a list of movies.")
 	@GetMapping("")
 	public List<Movie> getAll() {
 		return movieRepo.findAll();
 	}
-
+	
+	@ApiOperation(value="Selects a movie by ID.")
 	@GetMapping("{id}")
-	public Movie getOne(@PathVariable long id) {
-		return movieRepo.findOne(id);
+	public Movie getOne(@PathVariable long id) throws StuffNotFoundException{
+		Movie movie = movieRepo.findOne(id);
+		if (movie == null) {
+			throw new StuffNotFoundException();
+		}
+		return movie;
 	}
 
+	@ApiOperation(value="Delete a movie by ID.")
 	@DeleteMapping("{id}")
 	public Movie delete(@PathVariable long id) {
 		try {
@@ -68,12 +81,13 @@ public class MovieApiController {
 			return null;
 		}
 	}
-
+	@ApiOperation(value="Creates a movie.")
 	@PostMapping("")
 	public Movie create(@RequestBody Movie movie) {
 		return movieRepo.save(movie);
 	}
 
+	@ApiOperation(value="Updates a movie.")
 	@PutMapping("{id}")
 	public Movie update(@RequestBody Movie movie, @PathVariable long id) {
 		movie.setId(id);
